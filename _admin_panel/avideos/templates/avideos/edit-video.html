@@ -1,0 +1,321 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+{% include 'base/sidebar.html' %}
+
+    <div class="lessonPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-bar">
+                            <h1 class="title-bar-title">
+                                <span class="d-ib">Video Management - Edit Video</span>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="category-select">
+                            <a class="btn btn-danger" href="{% url 'ap_videos:ap_vid_videos' %}">Back</a>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card margin-top-5">
+                            <div class="card-body">
+                                {% if form.errors %}
+                                  {% for field in form %}
+                                      {% for error in field.errors %}
+                                          <p style="color:red;text-align: center; margin:0px">
+                                              <span>{{ error|escape }}</span>
+                                          </p>
+                                      {% endfor %}
+                                  {% endfor %}
+
+                                  {% for error in form.non_field_errors %}
+                                     <p style="color:red;text-align: center; margin:0px">
+                                          <span>{{ error|escape }}</span>
+                                      </p>
+                                  {% endfor %}
+
+                                {% endif %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <p style="color:green;text-align: center;">{{message}}</p>
+                                    {% endfor %}
+                                {% endif %} 
+                                <form method="POST" enctype='multipart/form-data'>
+                                    {% csrf_token %}
+                                    <div class="row margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Video Name:</label>
+                                                <input type="text" class="form-control" name="vidName" value="{{context.vidName}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Category Name</label>
+                                                <select class="form-control" name="status">
+                                                    {% for c in cat %}
+                                                        <option value="{{c.id}}" {% if context.vidCat == c.id or context.vidCat == c.id|stringformat:'i' %} selected {% endif %}>{{c.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="row margin-bottom-15">
+                                         <div class="col-md-6">
+                                             <div class="form-group">
+                                                <label>Add video</label>
+                                                    {% if context.vidFile %}
+                                                        <input type="file" accept=".mp4,.avi,.flv,.vmv" value="{{context.vidFile.url}}" id="" class="form-control news-video" name="vidFile">
+                                                    {% else %}
+                                                        <input type="file" accept=".mp4,.avi,.flv,.vmv" value="" id="" class="form-control news-video" name="vidFile">
+                                                    {% endif %}
+                                             </div>
+                                             <div class="video-view" style="width: 100%; height: 180px; overflow: hidden;">
+                                                {% if context.vidFileUrl %}
+                                                    <iframe width="290" height="" class="video-box" controls="" src="{{context.vidFileUrl}}"></iframe>
+                                                {% else %}
+                                                    <iframe width="290" height="" class="video-box" controls="" src=""></iframe>
+                                                {% endif %}
+                                             </div>
+                                             <p style="color: green">File must be of type(mp4/avi/flv/vmv)</p>
+                                         </div>
+                                         <div class="col-md-6">
+                                                <div class="img-box article-img">
+                                                <label>Author's Image</label>
+                                                    <div class="img">
+                                                        {% if context.vidAuthImageUrl %}
+                                                            <img class="imagefile" src="{{context.vidAuthImageUrl}}"/>
+                                                        {% else %}
+                                                            <img class="imagefile" src="{% static 'assets/img/science.jpg' %}"/>
+                                                        {% endif %}
+                                                    </div>
+                                                    <label class="fileInput">
+                                                        Upload File
+                                                        {% if context.vidAuthImage %}
+                                                            <input name="vidAuthImage" type="file" value="{{context.vidAuthImage.url}}" onChange="singleFiles(event)"/>
+                                                        {% else %}
+                                                            <input name="vidAuthImage" type="file" onChange="singleFiles(event)"/>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                                <p style="color: green">Maximum size should be of 5mb and file must be of type(jpg/jpeg/png)</p>                                                                                      
+                                         </div>
+                                    </div>
+                                    <div class="row margin-bottom-15">
+                                        <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Author's Name:</label>
+                                            <input type="text" class="form-control" name="vidAuthName" value="{{context.vidAuthName}}" maxlength="15">
+                                        </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Author's Country:</label>
+                                            <input type="text" class="form-control" name="vidAuthCountry" value="{{context.vidAuthCountry}}">
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row margin-bottom-15">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Main Video Description</label>
+                                                <textarea class="form-control" rows="5" id="comment" name="vidDesc">{{context.vidDesc}}</textarea>
+                                            </div>    
+                                        </div>
+                                    </div>
+                                    <div class="row margin-bottom-15">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" type="submit">Confirm & Create</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% include 'base/footer-link.html' %}
+{% include 'base/footer.html' %}
+    <div id="addvideo" tabindex="-1" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header add-usermodel">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="lesson-text">
+                        <h4 class="modal-title">VIDEOS</h4>
+                    </div>
+                </div> 
+                <div class="col-xs-6">
+                    <div class="lesson-text text-right">
+                        <button class="btn btn-primary" type="button" data-target="#addLesson1" data-toggle="modal" data-dismiss="modal"> <i class="fa fa-plus"></i> ADD</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="modal-body provider-detail">
+                <div class="table-responsive">
+                    <table id="demo-datatables-5" class="table table-striped table-bordered table-nowrap dataTable" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="6%">
+                                    <label class="checkbox">
+                                    <input id="checkall" type="checkbox">
+                                    <span class="text-label"></span>
+                                    </label>
+                                </th>
+                                <th>Video</th>
+                                <th>Video Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+        </div>      
+    </div>
+    <div id="addLesson1" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="text-center">
+                <h5>You are about to add video already alloted to a category, Confirming will remove the video from previous category to this category. Do you want to Confirm ?</h5>
+                <div class="m-t-lg">
+                <button class="btn btn-red" data-dismiss="modal" type="button" data-toggle="modal" data-target="#exampleModalLong">Deny</button>
+                <a class="btn btn-primary" data-dismiss="modal" href="add-lesson-category-confirm.php">Confirm</a>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>      
+    </div>
+    <!-- Modal -->
+<div class="modal fade" id="exampleModalLong">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+                <h4 class="text-center">Delete Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="deleteUser" tabindex="-1" role="dialog" class="modal fade">
+     <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="text-center">
+              <h4>Video removed from category successfuliy !!!</h4>
+              <div class="m-t-lg">
+                <button class="btn btn-red" data-dismiss="modal" type="button" data-toggle="modal" data-target="#exampleModalLong">Continue</button>
+                <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+   
+    <!-- Modal END-->
+
+
+<script type="text/javascript">
+  $(document).on("change", ".news-video", function(evt) {
+  var $source = $('.video-box');
+  $source[0].src = URL.createObjectURL(this.files[0]);
+  $source.parent()[0].load();
+});
+  $(".video-view .close").on('click',function(){
+    $(".video-box").attr("src", "");      
+  });
+  single = new Array();
+  function singleFiles(event) {
+    this.single = [];
+    var singleFiles = event.target.files;
+    if (singleFiles) {
+      for (var file of singleFiles) {
+        var singleReader = new FileReader();
+        singleReader.onload = (e) => {
+          this.single.push(e.target.result);
+          $(event.target).closest('.img-box').find('.imagefile').attr('src', e.target.result)          
+        }
+        singleReader.readAsDataURL(file);
+      }
+    }
+  }
+</script>

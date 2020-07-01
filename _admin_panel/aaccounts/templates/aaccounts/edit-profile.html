@@ -1,0 +1,88 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+{% include 'base/sidebar.html' %}
+<div class="layout-main">
+
+    
+<div class="profilePage"></div>
+<div class="layout-content">
+    <div class="layout-content-body">
+        <div class="title-bar">
+
+            <h1 class="title-bar-title">
+              <span class="d-ib">Edit Admin Profile /</span>
+              <a href="{% url 'ap_accounts:aprofile' %}">Back to list</a>
+            </h1>
+        </div>
+        <div class="col-md-8 card panel-body" style="box-shadow: 0px 0px 8px #ccc;">
+            <div class="col-sm-12 col-md-12">
+                <div class="demo-form-wrapper">
+                    <form class="form form-horizontal" method="POST" enctype='multipart/form-data'>
+                        {% csrf_token%}
+                        <div class="form-group">
+                         <div class="col-md-6">
+                          <label class=" control-label">Name</label>
+                          <input id="" name="name" class="form-control" type="text" maxlength="50" value={{context.name}} required>
+                         </div>
+                         <div class="col-md-6">
+                          <label class=" control-label">Mobile</label>
+                          <input id="" name="mobile" class="form-control" type="text" maxlength="15" value={{context.mobile}} required>
+                         </div>
+                        </div>
+                        <div class="form-group">
+                         <div class="col-md-6 add-pic">
+                          <label class=" control-label">Add Images</label>
+                          <div class="pic-box">
+                            <div class="logoImg modify-img" style="width: 100px; margin: 0 auto">  
+                                {% if context.profile_image %} 
+                                    <img name="proimage" src="{{context.profile_image}}" class="result">
+                                {% else %}
+                                    <img src="{% static 'assets/img/science.jpg' %}" class="result">
+                                {% endif %}
+                                <input id="logo-file" name="profileimg" type="file" class="hide fileInput">
+                                <label for="logo-file" class="btn btn-large"></label>
+                            </div>
+                         </div>
+                         </div>
+                        </div>
+                        <div class="form-group">
+                         <div class="col-md-6">
+                          <label class=" control-label">Email ID</label>
+                          <input id="" name="email" class="form-control" type="text" maxlength="50" value="{{context.email}}" required>
+                         </div>
+                         <div class="col-md-6">
+                          <label class=" control-label">Country</label>
+                          <input id="" name="country" class="form-control" type="text" maxlength="50" value="{{context.country}}" required>
+                         </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12">
+                            <label for="about" class=" control-label">Description</label>
+                            <textarea id="" name="about" class="form-control" rows="3" maxlength="100">{{context.about}}</textarea>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                            <div class=" col-sm-8  col-md-8 ">
+                                <button class="btn btn-primary " type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% if form.errors %}
+                        <br>
+                        <p style="color:red; margin-left: 150px">{{ form.non_field_errors.as_text |cut:"* "}}</p>
+                    {% endif %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p style="color:green;text-align: center;">{{message}}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% include 'base/footer.html' %}
+{% include 'base/footer-link.html' %}

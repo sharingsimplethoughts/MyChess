@@ -1,0 +1,220 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+
+<div class="layout-main">
+    {% include 'base/sidebar.html' %}
+
+    <div class="userPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                    <div class="row margin-bottom-15">
+                        <div class="col-md-6">
+                            <div class="title-bar">
+                                <h1 class="title-bar-title">
+                                    <span class="d-ib">Leaderboard-View</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="category-select">
+                                <a href="{% url 'ap_leaderboard:apl_list' %}"><button class="btn btn-danger">Back</button></a>
+                            </div>
+                        </div>
+                    </div>
+                <div class="row gutter-xs">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <!-- <div class="card-header">
+                                <div class="card-actions">
+                                    <button type="button" class="card-action card-toggler" title="Collapse"></button>
+                                    <button type="button" class="card-action card-reload" title="Reload"></button>
+
+                                </div>    
+                            </div> -->
+                            <div class="card-body">
+                                    <form class="form-horizontal" action="/action_page.php">
+                                        <div class="row margin-bottom-15">
+                                            <div class="col-md-12">
+                                                <div class="pic-box">
+                                                    <div class="logoImg modify-img" style="width: 100px; margin: 0 auto"> 
+                                                        {% if user.profile_image %} 
+                                                            <img src="{{user.profile_image.url}}" class="result">            
+                                                        {% else %}
+                                                            <img src="{% static 'assets/img/science.jpg' %}" class="result">            
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="user-profile text-center">
+                                                        <h5>User ID:<span>{{user.id}}</span></h5>
+                                                        <h5>RANK:<span>{{rank}}</span></h5>
+                                                        <h4>BASIC DETAILS</h4>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    <div class="row">
+                                        <div class="col-md-6">                        
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Name</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{user.name}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Country</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{user.country}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Subscription</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">                        
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Mobile</label>
+                                                <div class="col-sm-6">
+                                                    <input type="phone" class="form-control" id="fname" value="{{user.mobile}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Email</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="email" value="{{user.email}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Duration</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="duration" value="" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                      </form>
+                                      <hr>
+                                      <form class="form-horizontal" action="/action_page.php">
+                                        <div class="row margin-bottom-15">
+                                        <div class="user-profile text-center">
+                                            <h4>USER STATS</h4>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Games Played</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{player.tgame}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Games Won</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{player.tgwon}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Games Lost</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{player.tglost}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Best Winning Streak</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{player.bwstreak}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Lesson Completed</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="Data" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Videos Completed</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="Data" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Leaderboard Ranking</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="Data" placeholder="" readonly>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Tournament Played</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{player.ttourn}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Tournament Won</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{player.ttwon}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Achievement Earned</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{player.tach}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Tournament Created</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="Data" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Matches Viewed</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="Data" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="control-label col-sm-4">Start Date</label>
+                                                <div class="col-sm-6">
+                                                <div class="input-group date">
+                                                    <input id="start_date" class="form-control" type="text">
+                                                    <span class="input-group-btn">
+                                                    <button class="btn btn-primary date" type="button">
+                                                        <span class="icon icon-calendar"></span>
+                                                    </button>
+                                                    </span>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="control-label col-sm-4">End Date</label>
+                                                <div class="col-sm-6">
+                                                <div class="input-group date">
+                                                    <input id="end_date" class="form-control" type="text">
+                                                    <span class="input-group-btn">
+                                                    <button class="btn btn-primary date" type="button">
+                                                        <span class="icon icon-calendar"></span>
+                                                    </button>
+                                                    </span>
+                                                </div>
+                                                </div>
+                                            </div>  -->
+                                        </div> 
+                                    </div>   
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'base/footer.html' %}
+    {% include 'base/footer-link.html' %}
+  
+    

@@ -1,0 +1,169 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}    
+
+<div class="layout-main">
+{% include 'base/sidebar.html' %}
+
+    <div class="lessonPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-bar">
+                            <h1 class="title-bar-title">
+                                <span class="d-ib">Lesson Management - Lessons - Edit</span>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="category-select">
+                            <a href="{% url 'ap_lessons:ap_l_lessions_view' context.les_id %}"><button class="btn btn-danger">Back</button></a>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card margin-top-5">
+                            <div class="card-body">
+                                {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <p style="color:red;text-align: center; margin:0px">
+                                            <span>{{ error|escape }}</span>
+                                        </p>
+                                    {% endfor %}
+                                {% endfor %}
+
+                                {% for error in form.non_field_errors %}
+                                   <p style="color:red;text-align: center; margin:0px">
+                                        <span>{{ error|escape }}</span>
+                                    </p>
+                                {% endfor %}
+
+                              {% endif %}
+                              {% if messages %}
+                                  {% for message in messages %}
+                                      <p style="color:green;text-align: center;">{{message}}</p>
+                                  {% endfor %}
+                              {% endif %} 
+                                <form method="POST" enctype='multipart/form-data'>
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Lesson Name:</label>
+                                                <input name="les_name" type="text" class="form-control" value="{{context.les_name}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="sel1">Category Name:</label>
+                                                <select name="les_cat" class="form-control" id="sel1">
+                                                    {% for l in lcs %}
+                                                        <option value="{{l.id}}" {% if context.les_cat == l.id or context.les_cat == l.id|stringformat:'i' %} selected {% endif %} >{{l.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Add Video:<br><small class="text-info">(Video file must be within these types - mp4, avi, flv, wmv)</small></label><br>
+                                                <input type="file" accept=".mp4,.avi,.flv,.vmv" value="" id="" class="form-control news-video" name="les_vid">
+                                            </div>
+                                            <div class="video-view" style="width: 100%; height: 180px; overflow: hidden;">
+                                                {% if context.les_vid %}
+                                                    <iframe width="290" height="" class="video-box" controls="" src="{{context.les_vid}}"></iframe>
+                                                {% else %}
+                                                    {% if ls.videourl %}
+                                                        <iframe width="290" height="" class="video-box" controls="" src="{{ls.videourl}}"></iframe>
+                                                    {% else %}
+                                                        <iframe width="290" height="" class="video-box" controls="" src="{% static 'assets/media/sample.mp4' %}%"></iframe>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <!-- <video class="video-box" width="290" height="" controls controlsList=”nodownload”>
+                                                    {% if context.les_vid %}
+                                                        <source src="{{context.les_vid}}" type="video/mp4">
+                                                    {% else %}
+                                                        {% if ls.videourl %}
+                                                            <source src="{{ls.videourl}}" type="video/mp4">
+                                                        {% else %}
+                                                            <source src="" type="video/mp4">
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </video> -->
+                                            </div>
+                                        </div>
+                                            <div class="form-group">
+                                                <label>Main Lesson Description:</label>
+                                                <textarea class="form-control view-placeholder" rows="3" id="comment" name="les_desc">{{context.les_desc}}</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Lessons Hint:</label>
+                                                <textarea class="form-control view-placeholder" rows="3" id="comment" name="les_hint">{{context.les_hint}}</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Explanation</label>
+                                                <textarea class="form-control view-placeholder" rows="3" id="comment" name="les_exp">{{context.les_exp}}</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Lesson Learned:</label>
+                                                <textarea class="form-control view-placeholder" rows="3" id="comment" name="les_learn">{{context.les_learn}}</textarea>
+                                            </div>
+                                            <div class="lesson-btn text-center">
+                                                <button class="btn btn-primary" type="submit">Update & Confirm</button>
+                                             </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'base/footer.html' %}
+    {% include 'base/footer-link.html' %}
+  
+    <!-- Modal -->
+<div class="modal fade" id="exampleModalLong">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+                <h4 class="text-center">Lesson Create Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal END-->
+    
+    <script type="text/javascript">
+        $(document).on("change", ".news-video", function(evt) {
+        var $source = $('.video-box');
+        console.log($source)
+        $source[0].src = URL.createObjectURL(this.files[0]);
+        $source.parent()[0].load();
+        });
+        $(".video-view .close").on('click',function(){
+            $(".video-box").attr("src", "");
+        });
+        
+        single = new Array();
+        function singleFiles(event) {
+            this.single = [];
+            var singleFiles = event.target.files;
+            if (singleFiles) {
+            for (var file of singleFiles) {
+                var singleReader = new FileReader();
+                singleReader.onload = (e) => {
+                this.single.push(e.target.result);
+                $(event.target).closest('.img-box').find('.imagefile').attr('src', e.target.result)
+                }
+                singleReader.readAsDataURL(file);
+            }
+            }
+        }
+    </script>
+    
+  
+    

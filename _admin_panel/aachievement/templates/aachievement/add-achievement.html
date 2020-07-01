@@ -1,0 +1,132 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+
+<div class="layout-main">
+    {% include 'base/sidebar.html' %}
+
+    <div class="achivementPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-bar">
+                            <h1 class="title-bar-title">
+                                <span class="d-ib">Achievement Management - Add</span>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="category-select">
+                            <a class="btn btn-danger" href="{% url 'ap_achivement:apac_list' %}">Back</a>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card margin-top-5">
+                            <div class="card-body">
+                                <form action="{% url 'ap_achivement:apac_add' %}" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row  margin-bottom-15">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>Achievement Name:</label>
+                                                {% if data.name %}
+                                                    <input type="text" class="form-control" id="name" value="{{data.name}}" maxlength="90" name="name" required>
+                                                {% else %}
+                                                    <input type="text" class="form-control" id="name" maxlength="90" name="name" required>
+                                                {% endif %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="sel1">Unlock Task:</label>
+                                                {% if data.unlock_task %}
+                                                    <textarea class="form-control" rows="3" id="comment" maxlength="900" name="comment" required>{{data.unlock_task}}</textarea>
+                                                {% else %}
+                                                    <textarea class="form-control" rows="3" id="comment" maxlength="900" name="comment" required></textarea>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="img-box w-auto pull-right">
+                                                <label>Achievement Icon:</label>
+                                                <div class="img">
+                                                    <img class="imagefile" src="{% static 'assets/img/science.jpg' %}"/>
+                                                </div>
+                                                <label class="fileInput">
+                                                    Upload File
+                                                    <input type="file" onchange="singleFiles(event)" name="ach_image"/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row  margin-bottom-15">
+                                     <div class="col-md-12">
+                                        <div class="article-confirm text-center">
+                                          <button class="btn btn-primary" type="submit">Confirm & Create</button>
+                                        </div>
+                                     </div>
+                                  </div>
+                                </form>
+                                {% if form.errors %}
+                                  {% for field in form %}
+                                      {% for error in field.errors %}
+                                          <p style="color:red;text-align: center; margin:0px">
+                                              <span>{{ error|escape }}</span>
+                                          </p>
+                                      {% endfor %}
+                                  {% endfor %}
+
+                                  {% for error in form.non_field_errors %}
+                                     <p style="color:red;text-align: center; margin:0px">
+                                          <span>{{ error|escape }}</span>
+                                      </p>
+                                  {% endfor %}
+
+                                {% endif %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <p style="color:green;text-align: center;">{{message}}</p>
+                                    {% endfor %}
+                                {% endif %} 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'base/footer.html' %}
+    {% include 'base/footer-link.html' %}
+
+<!-- Modal -->
+<div class="modal fade" id="achievement-success">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+            <h4 class="text-center">Achievement Created Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal END-->
+<script>
+  single = new Array();
+  function singleFiles(event) {
+    this.single = [];
+    var singleFiles = event.target.files;
+    if (singleFiles) {
+      for (var file of singleFiles) {
+        var singleReader = new FileReader();
+        singleReader.onload = (e) => {
+          this.single.push(e.target.result);
+          $(event.target).closest('.img-box').find('.imagefile').attr('src', e.target.result)          
+        }
+        singleReader.readAsDataURL(file);
+      }
+    }
+  }
+</script>

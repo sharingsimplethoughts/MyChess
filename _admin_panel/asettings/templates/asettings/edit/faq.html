@@ -1,0 +1,104 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+{% include 'base/sidebar.html' %}
+
+	<div class="dashboardPage"></div>
+		<div class="layout-content">
+			   <div class="layout-content-body">
+          <div class="title-bar">
+            <h1 class="title-bar-title">
+              <span class="d-ib">FAQs</span>
+            </h1>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-xs-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="m-t-0 text-center">Add FAQs</h4>
+
+                      {% if form.errors %}
+
+
+                          {% for field in form %}
+                              {% for error in field.errors %}
+                                  <p style="color:red;text-align: center; margin:0px">
+                                      <span>{{ error|escape }}</span>
+                                  </p>
+                                    {% endfor %}
+                                {% endfor %}
+
+                                {% for error in form.non_field_errors %}
+                                   <p style="color:red;text-align: center; margin:0px">
+                                        <span>{{ error|escape }}</span>
+                                    </p>
+                                {% endfor %}
+
+                               {% endif %}
+
+                                {% if messages %}
+                                {% for message in messages %}
+                              <p style="color:green;text-align: center;">{{message}}</p>
+                           {% endfor %}
+                          {% endif %}
+
+                  <form class="form" method="POST" enctype='multipart/form-data'>{% csrf_token%}
+                    <div class="form-group col-md-12">
+                      <label>Title</label>
+                      <textarea class="form-control" name="title" required=""></textarea>
+                    </div>
+                    <!-- <div class="form-group col-md-12">
+                        <label>Title in Arabic</label>
+                        <textarea class="form-control" name="title_ar" required=""></textarea>
+                      </div> -->
+                    <div class="form-group col-md-12">
+                      <label>Content</label>
+                      <textarea rows="8" class="form-control" name="content" required=""></textarea>
+                    </div>
+                    <!-- <div class="form-group col-md-12">
+                        <label>Content in Arabic</label>
+                        <textarea rows="8" class="form-control" name="content_ar" required=""></textarea>
+                    </div> -->
+                   <!-- <input type="hidden" name="id" value="{{id}}"> -->
+
+                    <div class="form-group">
+                      <button class="btn btn-primary btn-block" type="submit" >Submit</button>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row gutter-xs">
+            <div class="col-md-12">
+
+
+              {% for faq in faqs %}
+
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-actions">
+                    <button type="button" class="card-action card-toggler" title="Collapse"></button>
+                  </div>
+                  <strong>{{forloop.counter}}. {{faq.title}} </strong>
+                  <!-- <strong>{{forloop.counter}}. {{faq.title}}/{{faq.title_ar}} </strong> -->
+                </div>
+                <div class="card-body" data-toggle="match-height" style="display:none">
+                  <p>{{faq.content}}</p>
+                </div>
+                <!-- <div class="card-body" data-toggle="match-height" style="display:none">
+                    <p>{{faq.content_ar}}</p>
+                  </div> -->
+              </div>
+
+            {% endfor %}
+
+            </div>
+
+          </div>
+        </div>
+		</div>
+
+{% include 'base/footer-link.html' %}    
+{% include 'base/footer.html' %}

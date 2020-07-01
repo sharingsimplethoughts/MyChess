@@ -1,0 +1,347 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+    {% include 'base/sidebar.html' %}
+
+    <div class="lessonPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-bar">
+                            <h1 class="title-bar-title">
+                                <span class="d-ib">Tournament Management - Add </span>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="category-select">
+                            <a class="btn btn-danger" href="{% url 'ap_tournament:tournament_list' %}">Back</a>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card margin-top-5">
+                            <div class="card-body">
+                                <form action="{% url 'ap_tournament:add_tournment' %}" method="POST" enctype='multipart/form-data'>
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input name="tname" type="text" value="{{context.tname}}" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Start Date</label>
+                                                <div class="input-group date">
+                                                    <input name="tstart_date" id="start_date" value="{{context.tstart_date}}" class="form-control" type="text" name="date">
+                                                    <span class="input-group-btn">
+                                                    <button id="start_date" class="btn btn-primary date" type="button">
+                                                        <span class="icon fa fa-calendar"></span>
+                                                    </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">    
+                                            <div class="form-group">
+                                                <label class="control-label">End Date</label>
+                                                <div class="input-group date">
+                                                    <input name="tend_date" id="end_date" value="{{context.tend_date}}" class="form-control" type="text" name="date">
+                                                    <span class="input-group-btn">
+                                                    <button id="end_date" class="btn btn-primary date" type="button">
+                                                        <span class="icon fa fa-calendar"></span>
+                                                    </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Start Time(24 hr format)</label><br>
+                                                
+                                                    <input name="thh" style="width: 40%; float: left;" type="number" value="{{context.thh}}" class="form-control" placeholder="hh" min="0" max="23">
+                                                    <label style="width: 5%;float: left;"></label>
+                                                    <input name="tmm" style="width: 40%; float: left;" type="number" value="{{context.tmm}}" class="form-control" placeholder="mm" min="0" max="60">
+                                                <!-- </div> -->
+                                            </div>
+                                        </div><br>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Number of Rounds</label>
+                                                <input name="trounds" type="number" value="{{context.trounds}}" class="form-control" min="1" max="20">
+                                            </div>
+                                        </div>
+                                        
+                                         
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Time Control/Time Limit(mins)</label>
+                                                <input name='tlimit' type="text" value="{{context.tlimit}}" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Duration(days)</label>
+                                                <input name="tduration" type="text" value="{{context.tduration}}" class="form-control">
+                                            </div>
+                                        </div> -->
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Rating</label>
+                                                <select name="trating" class="form-control" type="text">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                         <div class="col-md-12">
+                                            <div class="form-group row">
+                                               <div class="col-md-10">
+                                                    <label>Allow Entery For Subscribed Members Only</label>
+                                               </div>
+                                               <div class="col-md-2">
+                                                    <label class="switch product-switch">
+                                                        {% if '1' in context.tcond %}
+                                                            <input name="tcond" value="1" type="checkbox" checked="">
+                                                        {% else %}
+                                                            <input name="tcond" value="1" type="checkbox">
+                                                        {% endif %}
+                                                        <span class="slider round product-slide"></span>
+                                                    </label>
+                                               </div>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-12">
+                                            <div class="form-group row">
+                                               <div class="col-md-10">
+                                                    <label>Allow user to enter tournament before starting</label>
+                                               </div>
+                                               <div class="col-md-2">
+                                                    <label class="switch product-switch">
+                                                        {% if '2' in context.tcond %}
+                                                            <input name="tcond" value="2" type="checkbox" checked="">
+                                                        {% else %}
+                                                            <input name="tcond" value="2" type="checkbox">
+                                                        {% endif %}
+                                                        <span class="slider round product-slide"></span>
+                                                    </label>
+                                               </div>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-12">
+                                            <div class="form-group row">
+                                               <div class="col-md-10">
+                                                    <label>Allow user to enter more than half way around tournament time is passed</label>
+                                               </div>
+                                               <div class="col-md-2">
+                                                    <label class="switch product-switch">
+                                                        {% if '3' in context.tcond %}
+                                                            <input name="tcond" value="3" type="checkbox" checked="">
+                                                        {% else %}
+                                                            <input name="tcond" value="3" type="checkbox">
+                                                        {% endif %}
+                                                        <span class="slider round product-slide"></span>
+                                                    </label>
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row margin-bottom-15">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" type="submit">Confirm & Create</button>
+                                            </div>    
+                                        </div>
+                                    </div>
+                                </form>
+                                {% if form.errors %}
+                                  {% for field in form %}
+                                      {% for error in field.errors %}
+                                          <p style="color:red;text-align: center; margin:0px">
+                                              <span>{{ error|escape }}</span>
+                                          </p>
+                                      {% endfor %}
+                                  {% endfor %}
+
+                                  {% for error in form.non_field_errors %}
+                                     <p style="color:red;text-align: center; margin:0px">
+                                          <span>{{ error|escape }}</span>
+                                      </p>
+                                  {% endfor %}
+
+                                {% endif %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <p style="color:green;text-align: center;">{{message}}</p>
+                                    {% endfor %}
+                                {% endif %} 
+
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'base/footer-link.html' %}
+    {% include 'base/footer.html' %}
+    <div id="addvideo" tabindex="-1" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header add-usermodel">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="lesson-text">
+                        <h4 class="modal-title">LESSONS</h4>
+                    </div>
+                </div> 
+                <div class="col-xs-6">
+                    <div class="lesson-text text-right">
+                        <button class="btn btn-primary" type="button" data-target="#addLesson1" data-toggle="modal" data-dismiss="modal"> <i class="fa fa-plus"></i> ADD</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="modal-body provider-detail">
+                <div class="table-responsive">
+                    <table id="demo-datatables-5" class="table table-striped table-bordered table-nowrap dataTable" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="6%">
+                                    <label class="checkbox">
+                                    <input id="checkall" type="checkbox">
+                                    <span class="text-label"></span>
+                                    </label>
+                                </th>
+                                <th>Video</th>
+                                <th>Video Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <label class="checkbox">
+                                <input id="checkall" type="checkbox">
+                                <span class="text-label"></span>
+                                </label>
+                                </td>
+                                <td><i class="fa fa-play-circle" style="font-size: 30px;"></i></td>
+                                <td>Video Name</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+        </div>      
+    </div>
+    <div id="addLesson1" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="text-center">
+                <h5>You are about to add video already alloted to a category, Confirming will remove the video from previous category to this category. Do you want to Confirm ?</h5>
+                <div class="m-t-lg">
+                <button class="btn btn-red" data-dismiss="modal" type="button" data-toggle="modal" data-target="#exampleModalLong">Deny</button>
+                <a class="btn btn-primary" data-dismiss="modal" href="add-lesson-category-confirm.php">Confirm</a>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>      
+    </div>
+    <!-- Modal -->
+<div class="modal fade" id="exampleModalLong">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+                <h4 class="text-center">Delete Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="deleteUser" tabindex="-1" role="dialog" class="modal fade">
+     <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="text-center">
+              <h4>Video removed from category successfuliy !!!</h4>
+              <div class="m-t-lg">
+                <button class="btn btn-red" data-dismiss="modal" type="button" data-toggle="modal" data-target="#exampleModalLong">Continue</button>
+                <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+   
+    <!-- Modal END-->
+

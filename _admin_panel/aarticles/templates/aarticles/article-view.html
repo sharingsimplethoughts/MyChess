@@ -1,0 +1,138 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+{% include 'base/sidebar.html' %}
+
+    <div class="articlePage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-bar">
+                            <h1 class="title-bar-title">
+                                <span class="d-ib">Article Management - View</span>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="category-select">
+                            <a class="btn btn-danger" href="/admin_panel/articles/edit_article/{{article.id}}">Edit</a>
+                            <a href="/admin_panel/articles/article"><button class="btn btn-danger">Back</button></a>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card margin-top-5">
+                            <div class="card-body">
+                                <form>
+                                    <div class="row  margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Article Name:</label>
+                                                <input type="text" class="form-control" value="{{article.title}}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Posted On:</label>
+                                                <input type="text" class="form-control" value="{{article.created_on}}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row  margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Author's Name:</label>
+                                                <input type="text" class="form-control" value="{{article.author}}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Author's Country:</label>
+                                                <input type="text" class="form-control" value="{{article.author_country}}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row  margin-bottom-15">
+                                        <div class="col-md-3">
+                                            <div class="img-box article-img">
+                                            <label>Video</label>
+                                                <div class="img">
+                                                    {% if article.preview_image_url %}
+                                                        <img class="imagefile" src="{{article.preview_image_url}}"/>
+                                                    {% else %}
+                                                        <img class="imagefile" src="{% static 'assets/img/science.jpg' %}"/>
+                                                    {% endif %}
+                                                </div>
+                                                <!-- <label class="fileInput">
+                                                    Upload File
+                                                    <input type="file" onChange="singleFiles(event)"/>
+                                                </label> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="img-box article-img">
+                                            <label>Author's Image</label>
+                                                <div class="img">
+                                                    {% if article.author_profile_photo_url %}
+                                                        <img class="imagefile" src="{{article.author_profile_photo_url}}"/>
+                                                    {% else %}
+                                                        <img class="imagefile" src="{% static 'assets/img/science.jpg' %}"/>
+                                                    {% endif %}
+                                                </div>
+                                                <!-- <label class="fileInput">
+                                                    Upload File
+                                                    <input name="artAuthImage" type="file" onChange="singleFiles(event)"/>
+                                                </label> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Main Lesson Description:</label>
+                                                <textarea class="form-control article-mainlesson" rows="5" id="comment" placeholder="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry." readonly>{{article.description}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+  single = new Array();
+  function singleFiles(event) {
+    this.single = [];
+    var singleFiles = event.target.files;
+    if (singleFiles) {
+      for (var file of singleFiles) {
+        var singleReader = new FileReader();
+        singleReader.onload = (e) => {
+          this.single.push(e.target.result);
+          $(event.target).closest('.img-box').find('.imagefile').attr('src', e.target.result)          
+        }
+        singleReader.readAsDataURL(file);
+      }
+    }
+  }
+</script>
+{% include 'base/footer-link.html' %}
+{% include 'base/footer.html' %}
+
+    <!-- Modal -->
+<div class="modal fade" id="addConfirm">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+                <h4 class="text-center">Article Added Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal END-->

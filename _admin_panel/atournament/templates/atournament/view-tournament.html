@@ -1,0 +1,173 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+    {% include 'base/sidebar.html' %}
+
+    <div class="userPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                    <div class="row margin-bottom-15">
+                        <div class="col-md-6">
+                            <div class="title-bar">
+                                <h1 class="title-bar-title">
+                                    <span class="d-ib">Tournament Management-View</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="category-select">
+                                <a class="btn btn-danger" href="{% url 'ap_tournament:tournament_list' %}">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                <div class="row gutter-xs">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-actions">
+                                    <button type="button" class="card-action card-toggler" title="Collapse"></button>
+                                    <button type="button" class="card-action card-reload" title="Reload"></button>
+
+                                </div>    
+                            </div>
+                            <div class="card-body">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-md-6">                        
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Id</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{tourt.id}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Name</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{tourt.name}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">The Limit Per Game(mins)</label>
+                                                <div class="col-sm-6">
+                                                    <input type="fname" class="form-control" id="fname" value="{{tourt.game_time_limit}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">                        
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Start Date</label>
+                                                <div class="col-sm-6">
+                                                    <input type="phone" class="form-control" id="fname" value="{{tourt.start_date}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">End Date</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="email" value="{{tourt.end_date}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Duration(days)</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="duration" value="{{tourt.duration}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                      <hr>
+                                      <div class="row">
+                                            <div class="col-md-6"> 
+                                            <div class="col-md-12"> 
+                                                <div class="form-group">
+                                                    <h4>Tournament Status</h4>
+                                                </div>
+                                            </div>                   
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="fname">Total Game Played</label>
+                                                <div class="col-sm-6">
+                                                    <input type="phone" class="form-control" id="fname" value="{{total_game_played}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Most Games Played By</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="email" value="{{most_games_played_by}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Most Games Won By</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="duration" value="{{most_games_won_by}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Most Games Lost By</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="duration" value="{{most_games_lost_by}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Best Winning Streak</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="duration" value="{{best_winning_streak}}" placeholder="" readonly>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="col-md-6"> 
+                                                <div class="col-md-12"> 
+                                                    <div class="form-group">
+                                                        <h4>Leader Board Ranking</h4>
+                                                    </div>
+                                                </div>  
+                                                <!-- <div class="col-md-12" style="background-color: aquamarine;">  -->
+                                                    <div class="sroll-y">                 
+                                                        <div class="form-group">
+                                                            <label class="control-label col-sm-2" for="fname" style="display: block;">Rank</label>
+                                                            <div class="col-sm-4">
+                                                                <label class="control-label col-sm-4" for="fname">Name</label>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <label class="control-label col-sm-3" for="fname">Point</label>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <label class="control-label col-sm-3" for="fname">Detail</label>
+                                                            </div>
+                                                            <br>
+                                                            <hr>
+                                                            {% for x in leader_board %}
+                                                                <label class="control-label col-sm-2" for="fname">Rank {{forloop.counter}}</label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="phone" class="form-control" id="fname" value="{{x.player.name}}" placeholder="" readonly>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <input type="phone" class="form-control" id="fname" value="{{x.points}}" placeholder="" readonly>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <a class="btn btn-primary btn-sm btn-labeled" href="{% url 'ap_leaderboard:player_point_detail' x.player.id tourt.id %}">
+                                                                        <span class="btn-label">
+                                                                        <span class="icon fa fa-eye icon-fw icon-lg f-16"></span>
+                                                                        </span>
+                                                                        Match Wise Detail
+                                                                    </a>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                <!-- </div> -->
+                                            </div>    
+                                      </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'base/footer-link.html' %}
+    {% include 'base/footer.html' %}
+  
+    

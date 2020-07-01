@@ -1,0 +1,615 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+{% include 'base/sidebar.html' %}
+
+
+
+
+<link rel="stylesheet" href="{% static 'css/daterangepicker.min.css' %}">
+
+
+<script src="{% static 'js/daterangepicker.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<style type="text/css">
+
+.add-membrs{
+    position: relative;
+}
+.add-membrs h5{
+text-decoration: underline;
+}
+.add-membrs ul{
+list-style: none;
+padding-left: 0px;
+}
+.add-membrs ul li{
+    padding-bottom: 5px;
+    width: 49%;
+    display: inline-block;
+}
+.add-membrs .container_check{
+    position:relative;
+    float: right;
+    padding-top:5px;
+    font-size:13px;
+    padding-left:35px;
+    margin-bottom:12px;
+    cursor:pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    margin-right:10px
+}
+.add-membrs .container_check input{
+    position:absolute;
+    opacity:0;
+   der:1px solid transparent*/
+    border: 1px solid #2c3e50;
+}
+.add-membrs .container_check input:checked ~ .checkmark{
+    background-color: #2c3e50;
+    border:1px solid transparent;
+}
+.add-membrs .container_check .checkmark:after{
+    conten cursor:pointer;
+}
+.add-membrs .container_check .checkmark{
+    position:absolute;
+    top: 6px;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    border:1px solid #2c3e50;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    -ms-border-radius:3px;
+    border-radius:3px;
+    -webkit-transition:all 0.2s ease;
+    transition:all 0.2s ease;
+}
+.add-membrs .container_check .checkmark:after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 4px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* Date Picker
+========================*/
+
+  .datepicker.dropdown-menu {
+     width: 237px;
+    padding: 1.07143em 1.78571em;
+    -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
+    right: 0 !important;
+    }
+  .datepicker tbody {
+    color: #666; }
+  .datepicker table tr td span.active,
+  .datepicker table tr td span.active:hover,
+  .datepicker td .month.active {
+    background: #1976d2 !important; }
+  .datepicker td.active,
+  .datepicker td.selected {
+    background: #1976d2 !important; }
+    .default input[type=text] {
+    border: 1px solid #cad6e2;
+      border-radius: 5px;
+    }
+    .default .input-group {
+      width: 100%;
+      display: block !important;
+      height: 30px;
+    }
+    .default label {
+    }
+    .dafault21 {
+    width: 33%;
+    height: 20px;
+    margin-right: 13px;
+    display: inline-block;
+}
+.default{
+    position: relative;
+    padding-bottom: 53px;
+}
+.filter{
+    position: relative;
+    float: right;
+    font-size: 18px;
+    font-weight: 400;
+}
+.fil-cont{
+    position: relative;
+}
+.fil-cont h5{
+    padding: 0px;
+    margin: 8px 0 5px;
+}
+.fil-cont ul{
+padding-left: 0px;
+list-style: none;
+margin-top: 0;
+}
+.fil-cont ul li{
+display: inline-block;
+width: 30%;
+}
+.fil-list-grp{
+    position: relative;
+    padding: 3px 15px 0px !important;
+}
+.fil-list-grp:hover{
+background-color: transparent !important;
+
+}
+
+</style>
+
+    <div class="">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="title-bar">
+                    <h1 class="title-bar-title">
+                      <span class="d-ib">Settings Management</span>
+                    </h1>
+                </div>
+                <div class="row gutter-xs">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-body">
+                              <div class="row" style="position: relative;">
+                                <div class="col-md-8 col-sm-8 col-xs-12" ">
+                      </div>
+
+                              <div class="table-responsive col-md-12 col-sm-12 col-xs-12">
+                                <table id="demo-datatables-5" class="table table-striped table-bordered table-nowrap dataTable" cellspacing="0" width="100%">
+                                    <thead>
+                                       <tr>
+                                            <th>Options</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id = 'userlist'>
+                                        <tr>
+                                          <td>About Us</td>
+                                          <td>
+                                            <a href="{% url 'ap_settings:apsetm_aboutus' %}">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View
+                                              </button>
+                                            </a>
+                                            <!-- <a href="/settings_management/about_us_ar/">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View(Arabic)
+                                              </button>
+                                            </a> -->
+                                            <a href="{% url 'ap_settings:apsetm_edit' 'f1' %}">
+                                               <button class="btn btn-success btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-check icon-lg icon-fw"></span>
+                                                  </span>
+                                                  Edit
+                                            </button>
+                                          </a>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Terms and Condition</td>
+                                          <td>
+                                            <a href="{% url 'ap_settings:apsetm_termsandcondition' %}">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View
+                                              </button>
+                                            </a>
+                                            <!-- <a href="/settings_management/terms_and_condition_ar/">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View(Arabic)
+                                              </button>
+                                            </a> -->
+                                            <a href="{% url 'ap_settings:apsetm_edit' 'f2' %}">
+                                              <button class="btn btn-success btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-check icon-lg icon-fw"></span>
+                                                  </span>
+                                                  Edit
+                                              </button>
+                                            </a>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>FAQ's</td>
+                                          <td>
+                                            <a href="{% url 'ap_settings:apsetm_faq' %}">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View
+                                              </button>
+                                            </a>
+                                            <!-- <a href="/settings_management/faq_ar/">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View(Arabic)
+                                              </button>
+                                            </a> -->
+                                            <a href="{% url 'ap_settings:apsetm_faq_edit' %}">
+                                              <button class="btn btn-success btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-check icon-lg icon-fw"></span>
+                                                  </span>
+                                                  Edit
+                                              </button>
+                                            </a>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Help</td>
+                                          <td>
+                                            <a href="{% url 'ap_settings:apsetm_help' %}">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View
+                                              </button>
+                                            </a>
+                                            <!-- <a href="/settings_management/help_ar/">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View(Arabic)
+                                              </button>
+                                            </a> -->
+                                            <a href="{% url 'ap_settings:apsetm_edit' 'f4' %}">
+                                              <button class="btn btn-success btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-check icon-lg icon-fw"></span>
+                                                  </span>
+                                                  Edit
+                                              </button>
+                                            </a>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Privacy Policy</td>
+                                          <td>
+                                            <a href="{% url 'ap_settings:apsetm_privacypolicy' %}">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View
+                                              </button>
+                                            </a>
+                                            <!-- <a href="/settings_management/privacy_policy_ar/">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View(Arabic)
+                                              </button>
+                                            </a> -->
+                                            <a href="{% url 'ap_settings:apsetm_edit' 'f5' %}">
+                                              <button class="btn btn-success btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-check icon-lg icon-fw"></span>
+                                                  </span>
+                                                  Edit
+                                              </button>
+                                            </a>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Legal</td>
+                                          <td>
+                                            <a href="{% url 'ap_settings:apsetm_legal' %}">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View
+                                              </button>
+                                            </a>
+                                            <!-- <a href="/settings_management/legal_ar/">
+                                              <button class="btn btn-primary btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-eye icon-lg icon-fw"></span>
+                                                  </span>
+                                                  View(Arabic)
+                                              </button>
+                                            </a> -->
+                                            <a href="{% url 'ap_settings:apsetm_edit' 'f6' %}">
+                                              <button class="btn btn-success btn-sm btn-labeled" type="button" data-toggle="modal">
+                                                  <span class="btn-label">
+                                                   <span class="icon icon-check icon-lg icon-fw"></span>
+                                                  </span>
+                                                  Edit
+                                              </button>
+                                            </a>
+                                          </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% include 'base/footer-link.html' %}
+{% include 'base/footer.html' %}    
+
+<div id="viewOption" tabindex="-1" role="dialog" class="modal fade">
+  <div class="layout-content">
+      <div class="layout-content-body">
+          <div class="title-bar">
+
+
+          </div>
+          <div class="row gutter-xs">
+              <div class="col-md-8 card panel-body" style="box-shadow: 0px 0px 14px #999;">
+                  <div class="col-sm-12 col-md-12">
+                      <div class="demo-form-wrapper">
+
+                          <form class="form form-horizontal" action="/category_management/add_category/" method="POST" enctype='multipart/form-data'>{% csrf_token%}
+
+                              <div class="form-group">
+                               <div class="col-md-6" id="lblTitle">
+                               </div>
+                              </div>
+                              <div class="form-group">
+                               <div class="col-md-6" id="txtDesc">
+
+                               </div>
+                              </div>
+                              <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+
+                          </form>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div id="deleteOption" tabindex="-1" role="dialog" class="modal fade">
+     <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span aria-hidden="true">×</span>
+              <span class="sr-only">Close</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center">
+              <span class="text-danger icon icon-times-circle icon-5x"></span>
+              <h3 class="text-danger">Delete</h3>
+              <h4>Are you sure, you want to delete item?</h4>
+              <div class="m-t-lg">
+                <button class="btn btn-danger" id="deleteuser_id" data-dismiss="modal" type="button" userid = "" onclick="deleteUserFunction()" >Continue</button>
+                <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+</div>
+
+<script type="text/javascript">
+              $(document).ready(function(){
+               $("#logo-file").change(function(e){
+                var img = e.target.files[0];
+                if(!iEdit.open(img, true, function(res){
+                 $("#result1").attr("src", res);
+                })){
+                  alert("Whoops! That is not an image!");
+                }
+               });
+               $(document).on("click",".add-facility .plus-btn",function() {
+                $('.add-facility .facility-box').append('\
+                   <div class="col-md-6">\
+                    <input id="" class="form-control" type="date">\
+                    <span class="del">x</span>\
+                   </div>');
+                  $(".add-facility .del").on('click',function(){
+                    $(this).parent('.col-md-6').remove();
+                  });
+              });
+              });
+
+
+              $(document).ready(function(){
+               $("#coverlogo-file").change(function(e){
+                var img = e.target.files[0];
+                if(!iEdit.open(img, true, function(res){
+                 $("#result2").attr("src", res);
+                })){
+                  alert("Whoops! That is not an image!");
+                }
+               });
+               $(document).on("click",".add-facility .plus-btn",function() {
+                $('.add-facility .facility-box').append('\
+                   <div class="col-md-6">\
+                    <input id="" class="form-control" type="date">\
+                    <span class="del">x</span>\
+                   </div>');
+                  $(".add-facility .del").on('click',function(){
+                    $(this).parent('.col-md-6').remove();
+                  });
+              });
+              });
+</script>
+<script type="text/javascript">
+         $(document).ready(function(){
+            $("#startdate").datepicker({
+                todayBtn:  1,
+                autoclose: true,
+            }).on('changeDate', function (selected) {
+                var minDate = new Date(selected.date.valueOf());
+                $('#enddate').datepicker('setStartDate', minDate);
+            });
+
+            $("#enddate").datepicker({
+                todayBtn:  1,
+                autoclose: true,
+            }).on('changeDate', function (selected) {
+                 var maxDate = new Date(selected.date.valueOf());
+                 $('#startdate').datepicker('setEndDate', maxDate);
+            });
+        });
+
+
+</script>
+<script type="text/javascript">
+
+function viewuser(clicked_id){
+  console.log(clicked_id)
+  $.ajax({
+    type:"GET",
+    url: "/ap_setm_api/displayoption/"+clicked_id,
+    headers: { "X-CSRFToken":getCookie("csrftoken") },
+    success: function( data )
+    {
+      console.log('hello')
+      console.log(data)
+      $('#lblTitle').empty()
+      $('#txtDesc').empty()
+
+      for(i=data.length-1;i>=0;i--){
+        $('#lblTitle').prepend('<label class="control-label" id="opt_name">'+data[i].title+'</label>')
+        $('#txtDesc').prepend('<textarea id="sdesc1" name="servicedesc" rows="30" cols="5" class="form-control" placeholder="" readonly>'+data[i].content+'</textarea>')
+      }
+    },
+    statusCode: {
+      404: function(response) {
+        console.log('ajax.statusCode: 404');
+        alert('404')
+      },
+      500: function(response) {
+        alert('500')
+      },
+      400: function(response) {
+        alert('400')
+      },
+    }
+  })
+}
+
+function deleteoption(clicked_id){
+  console.log(clicked_id)
+  document.getElementById('deleteuser_id').setAttribute('userid',clicked_id)
+
+};
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function deleteUserFunction(){
+    var pk  = document.getElementById('deleteuser_id').getAttribute("userid");
+    $.ajax(
+    {
+        type:"POST",
+        url: "/ap_setm_api/deleteoption/"+pk,
+        headers: { "X-CSRFToken":getCookie("csrftoken") },
+
+      success: function( data )
+        {
+          swal("", "Deleted Successfully", "success").then(function(){
+            location.reload();
+          });
+            // alert(data.message)
+            // window.location.reload();
+
+        },
+
+      statusCode: {
+        404: function(response) {
+            console.log('ajax.statusCode: 404');
+            alert('404')
+        },
+        500: function(response) {
+            alert('500')
+        },
+        400: function(response) {
+            alert('400')
+        },
+    }
+
+     })
+
+  };
+
+$(document).ready(function(){
+
+$(".clicksr").click();
+
+$('#filter_date').change(function() {
+
+    if ($('#startdate').val() != '' && $('#enddate').val() != '' ){
+
+
+      $('#filter-user').prop('disabled', false);
+
+
+
+            }
+      else{
+
+        $('#filter-user').prop('disabled', true);
+      }
+
+
+})
+})
+
+</script>

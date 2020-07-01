@@ -1,0 +1,71 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+
+    <div class="login">
+      <div class="login-body">
+        <a class="login-brand" href="#">
+          <img class="img-responsive" src="{% static 'assets/img/logo.png' %}" alt="logo">
+        </a>
+        <div class="login-form">
+          <form data-toggle="validator" method="POST" enctype='multipart/form-data'>
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" id="email" name="email"  class="form-control" maxlength="50" value="fdsfj">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password" class="form-control" type="password" name="password" maxlength="50">
+            </div>
+            <div class="form-group">
+              <label class="custom-control custom-control-primary custom-checkbox">
+                <input id ="rememberChkBox" class="custom-control-input" type="checkbox" checked="checked">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-label">Keep me signed in </span>
+              </label>
+              <span aria-hidden="true"> . </span>
+              <a class="pull-right" href="/admin_panel/password_reset/">Forgot password?</a>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+
+          </form>
+          {% if form.errors %}
+          	<br>
+           	<p style="color:red;text-align: center;">{{ form.non_field_errors.as_text |cut:"* "}}<p>
+          {% endif %}
+        </div>
+      </div>  
+    </div>
+
+  {% include 'base/footer-link.html' %}
+
+<script type="text/javascript">
+
+
+$(function () {
+
+if (localStorage.chkbox && localStorage.chkbox != '') {
+   $('#rememberChkBox').attr('checked', 'checked');
+   $('#email').val(localStorage.email);
+   $('#password').val(localStorage.pass);
+} else {
+   $('#rememberChkBox').removeAttr('checked');
+   $('#email').val('');
+   $('#password').val('');
+}
+
+$('#rememberChkBox').click(function () {
+
+   if ($('#rememberChkBox').is(':checked')) {
+       // save username and password
+       localStorage.email = $('#email').val();
+       localStorage.pass = $('#password').val();
+       localStorage.chkbox = $('#rememberChkBox').val();
+   } else {
+       localStorage.email = '';
+       localStorage.pass = '';
+       localStorage.chkbox = '';
+   }
+});
+});
+</script>

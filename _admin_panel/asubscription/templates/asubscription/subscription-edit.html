@@ -1,0 +1,159 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+    {% include 'base/sidebar.html' %}
+
+    <div class="articlePage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-bar">
+                            <h1 class="title-bar-title">
+                                <span class="d-ib">Subscription Management - Edit</span>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="category-select">
+                            <a class="btn btn-danger" href="{% url 'ap_subscription:aps_view' con.id %}">Back</a>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card margin-top-5">
+                            <div class="card-body">
+                                <form action="{% url 'ap_subscription:aps_edit' con.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row  margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Subscription Name:</label>
+                                                <input type="text" class="form-control" name="name" value="{{con.plan_name}}" required>
+                                                <!-- <div class="article-icon">
+                                                 <i class="fa fa-pencil-square-o"></i>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row  margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Duration(Monthly):</label>
+                                                <select class="form-control" name="duration_m">
+                                                    <option value="0">Choose</option>
+                                                    {% for i in '12345678901' %}
+                                                        {% if con.period_m == i %}
+                                                            <option value="{{forloop.counter}}" selected>{{forloop.counter}}</option>
+                                                        {% else %}
+                                                            <option value="{{forloop.counter}}">{{forloop.counter}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Duration(Yearly):</label>
+                                                <select class="form-control" name="duration_y">
+                                                    <option value="0">Choose</option>
+                                                    {% for i in '12345' %}
+                                                        {% if con.period_y == i %}
+                                                            <option value="{{forloop.counter}}" selected>{{forloop.counter}}</option>
+                                                        {% else %}
+                                                            <option value="{{forloop.counter}}">{{forloop.counter}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="row  margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Price(Monthly):</label>
+                                                <input type="text" class="form-control" name="price_m" value="{{con.price_m}}" required>
+                                                <!-- <div class="article-icon">
+                                                 <i class="fa fa-pencil-square-o"></i>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Price(Yearly):</label>
+                                                <input type="text" class="form-control" name="price_y" value="{{con.price_y}}" required>
+                                                <!-- <div class="article-icon">
+                                                 <i class="fa fa-pencil-square-o"></i>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                     
+                                    </div>
+                                    <div class="row margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Benefits:</label>
+                                                <textarea class="form-control article-mainlesson" name="benefits" rows="3" id="comment" required>{{con.description}}</textarea>
+                                                <!-- <div class="article-icon">
+                                                 <i class="fa fa-pencil-square-o"></i>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>    
+                                    <div class="row  margin-bottom-15">
+                                     <div class="col-md-12">
+                                        <div class="article-confirm text-center">
+                                          <button class="btn btn-primary" type="submit">Update & Confirm </button>
+                                        </div>
+                                     </div>
+                                  </div>
+                                </form>
+                                {% if form.errors %}
+                                  {% for field in form %}
+                                      {% for error in field.errors %}
+                                          <p style="color:red;text-align: center; margin:0px">
+                                              <span>{{ error|escape }}</span>
+                                          </p>
+                                      {% endfor %}
+                                  {% endfor %}
+
+                                  {% for error in form.non_field_errors %}
+                                     <p style="color:red;text-align: center; margin:0px">
+                                          <span>{{ error|escape }}</span>
+                                      </p>
+                                  {% endfor %}
+
+                                {% endif %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <p style="color:green;text-align: center;">{{message}}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'base/footer.html' %}
+    {% include 'base/footer-link.html' %}
+
+    <!-- Modal -->
+<div class="modal fade" id="addConfirm">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+                <h4 class="text-center">Subscription Updated Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal END-->
+
+
+    

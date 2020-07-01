@@ -1,0 +1,95 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+
+<div class="layout-main">
+{% include 'base/sidebar.html' %}
+
+    <div class="lessonPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-bar">
+                            <h1 class="title-bar-title">
+                                <span class="d-ib">Puzzle Management - Puzzles - View</span>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="category-select">
+                            <a class="btn btn-danger" href="{% url 'ap_puzzles:ap_p_puzzles_edit' ls.id %}">Edit</a>
+                            <a href="{% url 'ap_puzzles:ap_p_puzzles' %}"><button class="btn btn-danger">Back</button></a>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card margin-top-5">
+                            <div class="card-body">
+                                {% if messages %}
+                                  {% for message in messages %}
+                                      <p style="color:green;text-align: center;">{{message}}</p>
+                                  {% endfor %}
+                                {% endif %} 
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Puzzle Name:</label>
+                                                <input type="text" class="form-control" value="{{ls.name}}" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="sel1">Category Name:</label>
+                                                <input type="text" class="form-control" value="{{ls.category.name}}" readonly>
+                                            </div>
+                                                <div class="form-group">
+                                                    <label>Video</label>
+                                                    <div class="video-view" style="width: 100%; height: 180px; overflow: hidden;">
+                                                        {% if ls.videourl %}
+                                                            <iframe width="290" height="" class="video-box" controls="" src="{{ls.videourl}}"></iframe>
+                                                        {% else %}
+                                                            <iframe width="290" height="" class="video-box" controls="" src="{% static 'assets/media/sample.mp4' %}%"></iframe>
+                                                        {% endif %}
+                                                        <!-- <video class="video-box" width="290" height="" controls controlsList=”nodownload”>
+                                                            {% if ls.videourl %}
+                                                                <source src="{{ls.videourl}}" type="video/mp4/youtube">
+                                                            {% else %}
+                                                                <source src="" type="video/mp4">
+                                                            {% endif %}
+                                                        </video> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Main Puzzle Description:</label>
+                                                <textarea class="form-control view-placeholder" rows="3" id="comment" readonly>{{ls.description}}</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Puzzles Hint:</label>
+                                                <textarea class="form-control view-placeholder" rows="3" id="comment" readonly>{{ls.hint}}</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Explanation:</label>
+                                                <textarea class="form-control view-placeholder" rows="3" id="comment" readonly>{{ls.explanation}}</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Puzzle Learned:</label>
+                                                <textarea class="form-control view-placeholder" rows="3" id="comment" readonly>{{ls.learned}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% include 'base/footer.html' %}
+{% include 'base/footer-link.html' %}
+    
+  
+  
+
+    

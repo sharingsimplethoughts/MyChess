@@ -1,0 +1,165 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+    {% include 'base/sidebar.html' %}
+
+    <div class="subscriptionsPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-bar">
+                            <h1 class="title-bar-title">
+                                <span class="d-ib">Subscription Management - Add</span>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="category-select">
+                            <a class="btn btn-danger" href="{% url 'ap_subscription:aps_list' %}">Back</a>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card margin-top-5">
+                            <div class="card-body">
+                                <form method="POST" action="{% url 'ap_subscription:aps_add' %}">
+                                    {% csrf_token %}
+                                    <div class="row margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Subscription Name:</label>
+                                                <input type="text" name='name' class="form-control" value="{{con.name}}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row margin-bottom-15">
+                                         <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Duration(Monthly):</label>
+                                                <select class="form-control" name="duration_m">
+                                                    <option value="0">Choose</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Duration(Yearly):</label>
+                                                <select class="form-control" name="duration_y">
+                                                    <option value="0">Choose</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="row margin-bottom-15">
+                                         <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Price(Monthly):</label>
+                                                <input type="text" name="price_m" class="form-control" value="{{con.price_m}}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Price(Yearly):</label>
+                                                <input type="text" name="price_y" class="form-control" value="{{con.price_y}}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row margin-bottom-15">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Benefits:</label>
+                                                <textarea name="benefits" class="form-control" rows="4" id="comment" required>{{con.benefits}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                  <div class="row margin-bottom-15">
+                                     <div class="col-md-12">
+                                        <div class="article-confirm text-center">
+                                          <button class="btn btn-primary" type="submit">Confirm & Create</button>
+                                        </div>
+                                     </div>
+                                  </div>
+                                </form>
+                                {% if form.errors %}
+                                  {% for field in form %}
+                                      {% for error in field.errors %}
+                                          <p style="color:red;text-align: center; margin:0px">
+                                              <span>{{ error|escape }}</span>
+                                          </p>
+                                      {% endfor %}
+                                  {% endfor %}
+
+                                  {% for error in form.non_field_errors %}
+                                     <p style="color:red;text-align: center; margin:0px">
+                                          <span>{{ error|escape }}</span>
+                                      </p>
+                                  {% endfor %}
+
+                                {% endif %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <p style="color:green;text-align: center;">{{message}}</p>
+                                    {% endfor %}
+                                {% endif %} 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+  single = new Array();
+  function singleFiles(event) {
+    this.single = [];
+    var singleFiles = event.target.files;
+    if (singleFiles) {
+      for (var file of singleFiles) {
+        var singleReader = new FileReader();
+        singleReader.onload = (e) => {
+          this.single.push(e.target.result);
+          $(event.target).closest('.img-box').find('.imagefile').attr('src', e.target.result)          
+        }
+        singleReader.readAsDataURL(file);
+      }
+    }
+  }
+</script>
+{% include 'base/footer.html' %}
+{% include 'base/footer-link.html' %}
+
+    <!-- Modal -->
+<div class="modal fade" id="addConfirm">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+                <h4 class="text-center">Subscription Added Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal END-->
+
+
+    

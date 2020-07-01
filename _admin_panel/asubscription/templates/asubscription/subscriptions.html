@@ -1,0 +1,272 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+    {% include 'base/sidebar.html' %}
+
+    <div class="subscriptionsPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                    <div class="row margin-bottom-15">
+                        <div class="col-md-12">
+                            <div class="title-bar">
+                                <h1 class="title-bar-title">
+                                    <span class="d-ib">Subscription Management</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-15">
+                        <div class="col-sm-8"></div>
+                        <div class="col-sm-5">
+                            <label style="color:blue;">After importing the file please click the submit button</label>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-15">
+                        
+                        <div class="col-sm-3">
+                            <!-- <div class="form-group">
+                            <label for="" class="control-label">Duration</label>
+                            <select class="form-control" name="status">
+                                <option value="1">Monthly</option>
+                                <option value="0">Yearly</option>
+                            </select>
+                            </div> -->
+                        </div>
+                        
+                        <div class="col-sm-9">
+                            <form action="{% url 'ap_subscription:aps_import' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="add_member category-select">
+                                    
+                                    <input type="file" accept=".xls,.xlsx" name="excel_file" id="import" onchange="showImportSubmit(); return false;" class="hidden">
+                                    <a class="btn btn-danger btn-sm btn-labeled" href="{% url 'ap_subscription:aps_add' %}">
+                                        <span class="btn-label">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </span>
+                                        ADD
+                                    </a>
+                                    <label class="btn btn-danger btn-sm btn-labeled" for="import">
+                                        <span class="btn-label">
+                                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                        </span>
+                                        Import
+                                    </label>
+                                    <button id="importSubmit" class="btn btn-danger btn-sm btn-labeled" type="submit" style="display: none;">
+                                        <span class="btn-label">
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                        </span>
+                                        Submit
+                                    </button>
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <p style="color:green;">{{message}}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </form> 
+                        </div>  
+                    </div> 
+                <div class="row gutter-xs">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                <table id="demo-datatables-5" class="table table-striped table-bordered table-nowrap dataTable" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="6%">S.No ID</th>
+                                            <th>S Name</th>
+                                            <!-- <th>Duration(Monthly)</th> -->
+                                            <th>Price(Monthly)</th>
+                                            <!-- <th>Duration(Yearly)</th> -->
+                                            <th>Price(Yearly)</th>
+                                            <th width="20%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for s in subs %}
+                                        <tr>
+                                            <td>{{s.id}}</td>
+                                            <td>{{s.plan_name}}</td>
+                                            <!-- <td>{{s.period_m}}</td> -->
+                                            <td>{{s.price_m}}</td>
+                                            <!-- <td>{{s.period_y}}</td> -->
+                                            <td>{{s.price_y}}</td>
+                                            <td>
+                                            <button class="btn btn-danger btn-sm btn-labeled" type="button" data-toggle="modal" data-target="#deleteUser" id="{{s.id}}" onclick="delete_ach(this.id)">
+                                                <span class="btn-label">
+                                                <span class="icon fa fa-trash icon-fw icon-lg f-16"></span>
+                                                </span>
+                                                Delete
+                                            </button>
+                                            <a class="btn btn-primary btn-sm btn-labeled" href="{% url 'ap_subscription:aps_view' s.id %}">
+                                                <span class="btn-label">
+                                                <span class="icon fa fa-eye icon-fw icon-lg f-16"></span>
+                                                </span>
+                                                View
+                                            </a>
+                                            {% if s.is_blocked %}
+                                                <button class="btn btn-default btn-sm btn-labeled" type="button" id="{{s.id}}">
+                                                    <span class="btn-label">
+                                                        <label class="mr-2 switch product-switch">
+                                                            <input id="{{s.id}}" type="checkbox" onchange="block_unblock(this.id)">
+                                                            <span class="slider round product-slide"></span>
+                                                        </label>
+                                                    </span>
+                                                    <label id="{{s.id}}" for="">Unblock</label>
+                                                </button>
+                                            {% else %}
+                                                <button class="btn btn-default btn-sm btn-labeled" type="button" id="{{s.id}}">
+                                                    <span class="btn-label">
+                                                        <label class="mr-2 switch product-switch">
+                                                            <input id="{{s.id}}" type="checkbox" checked="" onchange="block_unblock(this.id)">
+                                                            <span class="slider round product-slide"></span>
+                                                        </label>
+                                                    </span>
+                                                    <label id="{{s.id}}" for="">Block</label>
+                                                </button>
+                                            {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'base/footer.html' %}
+    {% include 'base/footer-link.html' %}
+    
+    <div id="deleteUser" tabindex="-1" role="dialog" class="modal fade">
+     <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="text-center">
+              <h4>Are you sure you want to Delete this Lesson categories?</h4>
+              <div class="m-t-lg">
+                <button class="btn btn-red" id="deleteach_id" data-dismiss="modal" type="button" achid="" data-toggle="modal" onclick="conf_delete()">Continue</button>
+                <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+   
+    <!-- Modal -->
+<div class="modal fade" id="exampleModalLong">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+                <h4 class="text-center">Delete Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal END-->
+<script>
+    function delete_ach(id){
+        console.log(id)
+        document.getElementById('deleteach_id').setAttribute('achid',id)
+    };
+    function conf_delete(){
+        var pk  = document.getElementById('deleteach_id').getAttribute("achid");
+        $.ajax(
+        {
+            type:"GET",
+            url: "/subscription/delete/"+pk,
+            headers: { "X-CSRFToken":getCookie("csrftoken") },
+
+            success: function( data ){
+                swal("", "Deleted Successfully", "success").then(function(){
+                    location.reload();
+                });
+                // alert(data.message)
+                // window.location.reload();
+            },
+            statusCode: {
+                404: function(response) {
+                    console.log('ajax.statusCode: 404');
+                    alert('404')
+                },
+                500: function(response) {
+                    alert('500')
+                },
+                400: function(response) {
+                    alert('400')
+                },
+            }
+        })
+    };
+    function block_unblock(id){
+        $.ajax({
+            type:"GET",
+            url: "/subscription/block_unblock/"+id,
+            headers: {"X-CSRFToken":getCookie("csrftoken")},
+            success: function(data){
+                tags = document.getElementsByTagName("label")
+                for(var i=0;i<tags.length;i++){
+                    if(tags[i].id==id){
+                        if(tags[i].innerHTML==="Block"){
+                            tags[i].innerHTML="Unblock"
+                        }
+                        else{
+                            tags[i].innerHTML="Block"
+                        }
+                    }
+                }
+                swal("","Updated Successfully","success").then(function(){
+                    
+                });
+            },
+            statusCode: {
+                404: function(response) {
+                    console.log('ajax.statusCode: 404');
+                    alert('404')
+                },
+                500: function(response) {
+                    alert('500')
+                },
+                400: function(response) {
+                    alert('400')
+                },
+            }
+        })
+    };
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }   
+        }
+        return "";
+    };
+</script>
+<script>        
+    function showImportSubmit() {
+        document.getElementById("importSubmit").style.display = "inline-block";    
+    }
+</script>
+    
+ 
+
+    

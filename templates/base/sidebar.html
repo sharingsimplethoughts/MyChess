@@ -1,0 +1,109 @@
+<div class="layout-sidebar">
+    <div class="layout-sidebar-backdrop"></div>
+    <div class="layout-sidebar-body">
+      <div class="custom-scrollbar">
+        <nav id="sidenav" class="sidenav-collapse collapse">
+          <ul class="sidenav">
+            
+            <li class="sidenav-heading">Navigation</li>
+            <li class="sidenav-item dashboardPageNav">
+              <a href="{% url 'ap_accounts:ahome' %}" aria-haspopup="true">
+                <span class="sidenav-icon icon icon-home"></span>
+                <span class="sidenav-label">Dashboard</span>
+              </a>
+            </li>
+            <li class="sidenav-item userPageNav">
+                <a href="{% url 'ap_usermgmt:ap_um_list' %}" aria-haspopup="true">
+                  <span class="sidenav-icon icon icon-users"></span>
+                  <span class="sidenav-label">Users</span>
+                </a>
+            </li>
+            <li class="sidenav-item userPageNav">
+              <a href="{% url 'ap_gametime:apg_list' %}" aria-haspopup="true">
+                <span class="sidenav-icon icon fa-user"></span>
+                <span class="sidenav-label">Game Duration</span>
+              </a>
+            </li>
+            <li class="sidenav-item tournamentNav">
+                <a href="{% url 'ap_tournament:tournament_list' %}" aria-haspopup="true">
+                  <span class="sidenav-icon icon fa fa-trophy"></span>
+                  <span class="sidenav-label">Tournament</span>
+                </a>
+            </li>
+            <li class="sidenav-item has-subnav lessonNav">
+                <a aria-haspopup="true" aria-expanded="true">
+                  <span class="sidenav-icon icon fa-book"></span>
+                  <span class="sidenav-label">Lessons</span>
+                </a>
+                <ul class="sidenav-subnav collapse" aria-expanded="true">
+                  <li class="accNav-a"><a href="{% url 'ap_lessons:ap_l_categories' %}">Categories</a></li>
+                  <li class="accNav-b"><a href="{% url 'ap_lessons:ap_l_lessions' %}">Lessons</a></li> 
+                </ul>
+            </li>
+            <li class="sidenav-item has-subnav lessonNav">
+                <a aria-haspopup="true" aria-expanded="true">
+                  <span class="sidenav-icon icon fa-book"></span>
+                  <span class="sidenav-label">Puzzles</span>
+                </a>
+                <ul class="sidenav-subnav collapse" aria-expanded="true">
+                  <li class="accNav-a"><a href="{% url 'ap_puzzles:ap_p_categories' %}">Categories</a></li>
+                  <li class="accNav-b"><a href="{% url 'ap_puzzles:ap_p_puzzles' %}">Puzzles</a></li> 
+                </ul>
+            </li>
+            <li class="sidenav-item has-subnav videosNav">
+                <a aria-haspopup="true" aria-expanded="true">
+                  <span class="sidenav-icon icon fa-play-circle-o"></span>
+                  <span class="sidenav-label">Videos</span>
+                </a>
+                <ul class="sidenav-subnav collapse" aria-expanded="true">
+                  <li class="accNav-a"><a href="/admin_panel/videos/video_categories">Categories</a></li>
+                  <li class="accNav-b"><a href="/admin_panel/videos/videos">Video</a></li> 
+                </ul>
+            </li>
+            <li class="sidenav-item articlePageNav">
+              <a href="/admin_panel/articles/article" aria-haspopup="true">
+                <span class="sidenav-icon icon fa fa-file"></span>
+                <span class="sidenav-label">Articles</span>
+              </a>
+            </li>
+            <li class="sidenav-item subscriptionsPageNav">
+              <a href="{% url 'ap_subscription:aps_list' %}" aria-haspopup="true">
+                <span class="sidenav-icon icon fa fa-play-circle-o"></span>
+                <span class="sidenav-label">Subscriptions</span>
+              </a>
+            </li>
+            <li class="sidenav-item leaderboardPageNav">
+              <a href="{% url 'ap_leaderboard:apl_list' %}" aria-haspopup="true">
+                <span class="sidenav-icon icon fa fa-user"></span>
+                <span class="sidenav-label">Leaderboards</span>
+              </a>
+            </li>
+            <li class="sidenav-item achivementPageNav">
+              <a href="{% url 'ap_achivement:apac_list' %}" aria-haspopup="true">
+                <span class="sidenav-icon icon fa fa-trophy"></span>
+                <span class="sidenav-label">Achivements</span>
+              </a>
+            </li>
+            <li class="sidenav-item paymentsPageNav">
+              <a href="{% url 'ap_payment:appay_list' %}" aria-haspopup="true">
+                <span class="sidenav-icon icon fa fa-credit-card"></span>
+                <span class="sidenav-label">Payments</span>
+              </a>
+            </li>
+            <li class="sidenav-item notificationPageNav">
+                <a href="{% url 'ap_notification:ap_nm_send_notification' %}" aria-haspopup="true">
+                  <span class="sidenav-icon icon fa fa-bell-o"></span>
+                  <span class="sidenav-label">Notifiaction Mgt</span>
+                </a>
+            </li>
+            <li class="sidenav-item settingPageNav">
+              <a href="{% url 'ap_settings:ap_set_list' %}" aria-haspopup="true">
+                <span class="sidenav-icon icon fa fa-cog"></span>
+                <span class="sidenav-label">Setting</span>
+              </a>
+            </li>
+        </ul>
+        </nav>
+      </div>
+    </div>
+  </div>

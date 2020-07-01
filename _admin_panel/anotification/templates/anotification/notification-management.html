@@ -1,0 +1,455 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+  {% include 'base/sidebar.html' %}
+    <div class="notificationPage"></div>
+        <div class="layout-content">
+            <div class="layout-content-body">
+                <div class="title-bar">
+                    <h1 class="title-bar-title">
+                      <span class="d-ib">Notification Management</span>
+                    </h1>
+                </div>
+                <div class="row gutter-xs">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4><strong>Send Notification</strong></h4>
+                            </div>
+                            {% if form.errors %}
+                                {% for field in form %}
+                                  {% for error in field.errors %}
+                                      <p style="color:red;text-align: center; margin:0px">
+                                          <span>{{ error|escape }}</span>
+                                      </p>
+                                  {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                  <p style="color:red;text-align: center; margin:0px">
+                                      <span>{{ error|escape }}</span>
+                                  </p>
+                                {% endfor %}
+                            {% endif %}
+                            {% if messages %}
+                              {% for message in messages %}
+                                  <p style="color:green;text-align: center;">{{message}}</p>
+                              {% endfor %}
+                            {% endif %}
+                            <div class="card-body">
+                              <div class="row margin-bottom-15">
+                                <div class="form-group">
+                                  <label class="control-label col-sm-2">Sehedule on:</label>
+                                  <div class="col-sm-4">
+                                      <div class="input-group date">
+                                          {% if context.nt_date %}
+                                            <input id="start_date" class="form-control" value="{{context.nt_date}}" type="text" name="date">
+                                          {% else %}
+                                            <input id="start_date" class="form-control" value="" type="text" name="date">
+                                          {% endif %}
+                                          <span class="input-group-btn">
+                                          <button id="start_date" class="btn btn-primary date" type="button">
+                                              <span class="icon fa fa-calendar"></span>
+                                          </button>
+                                          </span>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-6 text-right">
+                                      <button  class="btn btn-primary fa fa-paper-plane" data-toggle="modal" data-target="#notifySend" onclick="confirmsend()">  Send</button>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="notification-border margin-bottom-15">
+                              <div class="row margin-bottom-15">
+                                <div class="col-md-11 col-sm-8 col-lg-11">
+                                  <div class="setting-head">
+                                    <h4>Message</h4>
+                                  </div>
+                                </div>
+                                <div class="col-md-1 col-sm-4 col-lg-1">
+                                  <button  class="btn btn-primary fa fa-pencil p-1 fs-18 pull-right mb-2" onclick="editdesc()"></button>
+                                </div>
+                              </div>
+                              <div class="row margin-bottom-15">
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                  {% if context.nt_desc %}
+                                    <textarea name="notification_desc" id="notification_desc_id" cols="30" rows="10" style="height: 100%; width: 100%; border: 0;" readonly>{{context.nt_desc}}</textarea>
+                                  {% else %}
+                                    <textarea name="notification_desc" id="notification_desc_id" cols="30" rows="10" style="height: 100%; width: 100%; border: 0;" readonly></textarea>
+                                  {% endif %}
+                                </div>
+                              </div>
+                              <button id="doneedit" name="doneedit" class="btn btn-primary fa fa-ok" onclick="doneedit()" style="display:none;" > Done</button>                              
+                            </div>
+                            <div class="notification-border1">
+                              <div class="row margin-bottom-15">
+                                <div class="col-md-10 col-sm-8 col-lg-10 col-xs-6">
+                                  <div class="setting-head">
+                                    <h4>Recipients</h4>
+                                  </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-lg-2 col-xs-6 text-right">
+                                  <a  class="btn btn-primary" href="{% url 'ap_notification:ap_nm_add_recipient' %}">Add Recipient</a>
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <div >
+                                <div>
+                                  <div>
+                                    <div>
+                                      <p><li><strong>Groups List</strong></li></p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {% if glist %}
+                              {% for g in glist %}
+                                <div class="notification-border1">
+                                  <div class="row margin-bottom-15">
+                                    <div class="col-md-10 col-sm-8 col-lg-10 col-xs-8">
+                                      <div class="setting-head">
+                                        <div class="col-md-1 col-sm-2 col-xs-4">
+                                        <span>
+                                          <label class="checkbox">
+                                            {% if context.gid_list == "" %}
+                                              <input name="{{g.id}}" id="checkallg" type="checkbox" checked>
+                                            {% else %}
+                                              {% if g.id|stringformat:"i" in context.gid_list %}
+                                                <input name="{{g.id}}" id="checkallg" type="checkbox" checked>
+                                              {% else %}
+                                                <input name="{{g.id}}" id="checkallg" type="checkbox">
+                                              {% endif %}
+                                            {% endif %}
+                                            <span class="text-label"></span>
+                                        </label>
+                                        </span>
+                                        </div>
+                                        <div class="col-md-9 col-sm-8 col-xs-8">
+                                        <p><strong>{{g.name}}</strong></p>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                          <p><strong>Group</strong></p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 col-lg-2 text-right">
+                                      <button id="{{g.id}}" class="btn btn-primary fa fa-eye" data-toggle="modal" data-target="#viewGroup" onclick="viewselectedgroup(this.id)"></button>
+                                      <button id="{{g.id}}" class="btn btn-primary fa fa-trash" data-toggle="modal" data-target="#deleteGroup" onclick="deleteselectedgroup(this.id)"></button>
+                                    </div>
+                                  </div>
+                                </div>
+                              {% endfor %}
+                            {% else %}
+                              <div class="notification-border1">
+                                <div class="row margin-bottom-15">
+                                  <div class="col-md-10 col-sm-8 col-lg-10 col-xs-8">
+                                    <div class="setting-head">
+                                      <div class="col-md-11 col-sm-8 col-xs-8">
+                                        <p><strong>No group exists</strong></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                            <div>
+                              <div>
+                                <div>
+                                  <div>
+                                    <div>
+                                      <p><li><strong>Users List</strong></li></p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {% if ulist %}
+                              {% for u in ulist %}
+                                <div class="notification-border1">
+                                  <div class="row margin-bottom-15">
+                                    <div class="col-md-10 col-sm-8 col-lg-10 col-xs-8">
+                                      <div class="setting-head">
+                                        <div class="col-md-1 col-sm-2 col-xs-4">
+                                        <span>
+                                          <label class="checkbox">
+                                            {% if context.uid_list == "" %}
+                                              <input name="{{u.id}}" id="checkallu" type="checkbox" checked>
+                                            {% else %}
+                                              {% if u.id|stringformat:"i" in context.uid_list%}
+                                                <input name="{{u.id}}" id="checkallu" type="checkbox" checked>
+                                              {% else %}
+                                                <input name="{{u.id}}" id="checkallu" type="checkbox">
+                                              {% endif %}
+                                            {% endif %}
+                                            <span class="text-label"></span>
+                                        </label>
+                                        </span>
+                                        </div>
+                                        <div class="col-md-9 col-sm-8 col-xs-8">
+                                          <p><strong>{{u.name}}</strong></p>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                          <p><strong>User</strong></p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 col-lg-2 text-right">
+                                      <button id="{{u.id}}" class="btn btn-primary fa fa-trash" data-toggle="modal" data-target="#deleteUser" onclick="deleteselecteduser(this.id)"></button>
+                                    </div>
+                                  </div>
+                                </div>
+                              {% endfor %}
+                            {% else %}
+                              <div class="notification-border1">
+                                <div class="row margin-bottom-15">
+                                  <div class="col-md-10 col-sm-8 col-lg-10 col-xs-8">
+                                    <div class="setting-head">
+                                      <div class="col-md-11 col-sm-8 col-xs-8">
+                                      <p><strong>No user exists</strong></p>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'base/footer-link.html' %}
+        {% include 'base/footer.html' %}
+    
+    <div class="modal fade" tabindex="-1" id="notifySend" role="dialog" >
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                <div class="successful-icon text-center">
+                <i class="fa fa-bell-o text-danger" aria-hidden="true" style="font-size: 26px;"></i>
+                </div>
+                  <div class="text-center">
+                    <h4>Are you sure you want to continue?</h4>
+                    <div class="m-t-lg">
+                      <form action="{% url 'ap_notification:ap_nm_send_notification' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="nt_date" id="nt_date" value="">
+                        <textarea name="nt_desc" id="nt_desc" cols="30" rows="10" hidden></textarea>
+                        <input type="hidden" name="gid_list" id="gid_list" value="">
+                        <input type="hidden" name="uid_list" id="uid_list" value="">
+                        <button class="btn btn-red" type="submit">Continue</button>
+                        <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="deleteGroup" tabindex="-1" role="dialog" class="modal fade">
+      <div class="modal-dialog modal-sm">
+         <div class="modal-content">
+           <div class="modal-body">
+             <div class="text-center">
+               <h4>Are you sure you want to Delete this Group?</h4>
+               <div class="m-t-lg">
+                 <button class="btn btn-red" data-dismiss="modal" type="button" data-toggle="modal" id="deletegroup_id" groupid = "" onclick="continueDeleteSelectedGroup()">Continue</button>
+                 <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>      
+    </div>
+    <div id="deleteUser" tabindex="-1" role="dialog" class="modal fade">
+      <div class="modal-dialog modal-sm">
+         <div class="modal-content">
+           <div class="modal-body">
+             <div class="text-center">
+               <h4>Are you sure you want to Delete this User?</h4>
+               <div class="m-t-lg">
+                 <button class="btn btn-red" data-dismiss="modal" type="button" data-toggle="modal" id="deleteuser_id" userid = "" onclick="continueDeleteSelectedUser()">Continue</button>
+                 <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>      
+    </div>
+    <div id="viewGroup" tabindex="-1" role="dialog" class="modal fade">
+      <div class="modal-dialog modal-sm">
+           <div class="modal-content">
+               <div class="modal-body">
+                <table id="demo-datatables-15" class="table table-striped table-bordered table-nowrap dataTable" cellspacing="0" width="100%">
+                  <thead>
+                    <tr>
+                      <td>ID</td>
+                      <td>User Name</td>
+                    </tr>
+                  </thead>
+                  <tbody id='tbody_gusers_list'>
+                    <!-- <tr>
+                      <td>1</td>
+                      <td>Amit</td>
+                    </tr> -->
+                  </tbody>
+                </table>
+               </div>
+           </div>
+       </div>
+    </div>
+
+<script>
+  function deleteselectedgroup(clicked_id){
+      console.log(clicked_id)
+      document.getElementById('deletegroup_id').setAttribute('groupid',clicked_id)
+  }
+  function continueDeleteSelectedGroup(){
+    var pk  = document.getElementById('deletegroup_id').getAttribute("groupid");
+    $.ajax(
+      {
+          type:"POST",
+          url: "/game/ap_api_delete_notification_group/"+pk,
+          headers: { "X-CSRFToken":getCookie("csrftoken") },
+
+          success: function( data ){
+              swal("", "Deleted Successfully", "success").then(function(){
+                  location.reload();
+              });
+          },
+          statusCode: {
+              404: function(response) {
+                  console.log('ajax.statusCode: 404');
+                  alert('404')
+              },
+              500: function(response) {
+                  alert('500')
+              },
+              400: function(response) {
+                  alert('400')
+              },
+          }
+      })
+  }
+  function deleteselecteduser(clicked_id){
+    console.log(clicked_id)
+    document.getElementById('deleteuser_id').setAttribute('userid',clicked_id)
+  }
+  function continueDeleteSelectedUser(){
+    var pk  = document.getElementById('deleteuser_id').getAttribute("userid");
+    $.ajax(
+      {
+          type:"POST",
+          url: "/game/ap_api_delete_notification_user/"+pk,
+          headers: { "X-CSRFToken":getCookie("csrftoken") },
+
+          success: function( data ){
+              swal("", "Deleted Successfully", "success").then(function(){
+                  location.reload();
+              });
+          },
+          statusCode: {
+              404: function(response) {
+                  console.log('ajax.statusCode: 404');
+                  alert('404')
+              },
+              500: function(response) {
+                  alert('500')
+              },
+              400: function(response) {
+                  alert('400')
+              },
+          }
+      })
+  }
+  function getCookie(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for(var i = 0; i <ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+          }
+      }
+      return "";
+  }
+</script>
+<script>
+  function viewselectedgroup(clicked_id){
+    $('#tbody_gusers_list').empty();
+    $.ajax(
+      {
+          type:"POST",
+          url: "/accounts/view_notification_group/"+clicked_id,
+          headers: { "X-CSRFToken":getCookie("csrftoken") },
+
+          success: function( data ){
+            console.log('hello');
+            console.log(data.data);
+            for(i=0;i<data.data.length;i++){
+                $('#tbody_gusers_list').prepend(
+                '<tr>'+
+                  '<td>'+data.data[i].id+'</td>'+
+                  '<td>'+data.data[i].name+'</td>'+
+                '</tr>'
+                );
+            };
+          },
+          statusCode: {
+              404: function(response) {
+                  console.log('ajax.statusCode: 404');
+                  alert('404')
+              },
+              500: function(response) {
+                  alert('500')
+              },
+              400: function(response) {
+                  alert('400')
+              },
+          }
+      })
+  };
+  function editdesc(){
+    document.getElementById('notification_desc_id').removeAttribute('readonly');
+    document.getElementById('doneedit').style.display = "block";
+  };
+  function doneedit(){
+    document.getElementById('notification_desc_id').readOnly = true;
+    document.getElementById('doneedit').style.display = "none";
+  };
+</script>
+<script>
+  function confirmsend(){
+    var notification_desc_id = document.getElementById('notification_desc_id');
+    var start_date = document.getElementById('start_date');
+    var nt_desc = document.getElementById('nt_desc');
+    var nt_date = document.getElementById('nt_date');
+    nt_desc.value = notification_desc_id.value;
+    nt_date.value = start_date.value;
+
+    var checkboxes = document.getElementsByTagName('input');
+    var gids = ",";
+    var uids = ",";
+    gid_list = document.getElementById('gid_list')
+    uid_list = document.getElementById('uid_list')
+    for(i=0;i<checkboxes.length;i++){
+      if(checkboxes[i].type=='checkbox' && checkboxes[i].checked==true){
+        if(checkboxes[i].id=='checkallg'){
+          gids = gids + checkboxes[i].name+',';
+        }
+        if(checkboxes[i].id=='checkallu'){
+          uids = uids + checkboxes[i].name+',';
+        }
+      }
+    }
+    gid_list.value = gids
+    uid_list.value = uids
+    
+  }
+</script>

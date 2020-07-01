@@ -1,0 +1,247 @@
+{% load staticfiles %}
+{% include 'base/header-link.html' %}
+{% include 'base/header.html' %}
+<div class="layout-main">
+{% include 'base/sidebar.html' %}
+
+    <div class="lessonPage ExplorerListPage">
+        <div class="layout-content">
+            <div class="layout-content-body">
+                    <div class="row margin-bottom-15">
+                        <div class="col-md-12">
+                            <div class="title-bar">
+                                <h1 class="title-bar-title">
+                                    <span class="d-ib">Lessons Management - Categories</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-15">
+                        <form action="{% url 'ap_lessons:ap_l_categories_import' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-sm-12">
+                                <div class="add_member category-select">
+                                    <p style="color:blue;">After importing the file please click the submit button</p>
+                                    <input type="file" accept=".xls,.xlsx" name="excel_file" id="import" onchange="showImportSubmit(); return false;" class="hidden">
+                                    <a class="btn btn-danger btn-sm btn-labeled" href="{% url 'ap_lessons:ap_l_categories_add' %}">
+                                        <span class="btn-label">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </span>
+                                        ADD
+                                    </a>
+                                    <label class="btn btn-danger btn-sm btn-labeled" for="import">
+                                        <span class="btn-label">
+                                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                        </span>
+                                        Import
+                                    </label>
+                                    <button id="importSubmit" class="btn btn-danger btn-sm btn-labeled" type="submit" style="display: none;">
+                                        <span class="btn-label">
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                        </span>
+                                        Submit
+                                    </button>
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <p style="color:green;">{{message}}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div> 
+                            </div> 
+                        </form> 
+                    </div> 
+                <div class="row gutter-xs">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                <table id="demo-datatables-5" class="table table-striped table-bordered table-nowrap dataTable" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="6%">S.No ID</th>
+                                            <th>Category ID</th>
+                                            <th>Category Name</th>
+                                            <th>Number of Lessons</th>
+                                            <th width="20%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for l in lcs %}
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td>{{l.id}}</td>
+                                                <td><span class="p-txt"> {{l.name}}</span></td>
+                                                <td>{{l.count}}</td>
+                                                <td>
+                                                    <button id="{{l.id}}" class="btn btn-danger btn-sm btn-labeled" type="button" data-toggle="modal" data-target="#deleteUser" onclick="deletelesson(this.id)">
+                                                        <span class="btn-label">
+                                                        <span class="icon fa fa-trash icon-fw icon-lg f-16"></span>
+                                                        </span>
+                                                        Delete
+                                                    </button>
+                                                    <a class="btn btn-primary btn-sm btn-labeled" href="{% url 'ap_lessons:ap_l_categories_view' l.id %}">
+                                                        <span class="btn-label">
+                                                        <span class="icon fa fa-eye icon-fw icon-lg f-16"></span>
+                                                        </span>
+                                                        View
+                                                    </a>
+                                                    <button class="btn btn-default btn-sm btn-labeled" type="button">
+                                                        {% if l.is_blocked %}
+                                                            <span class="btn-label">
+                                                                <label class="mr-2 switch product-switch">
+                                                                    <input id="{{l.id}}" type="checkbox" onchange="blockunblocklesson(this.id)">
+                                                                    <span class="slider round product-slide"></span>
+                                                                </label>
+                                                            </span>
+                                                            <label id="{{l.id}}" for="">Unblock</label>
+                                                        {% else %}
+                                                            <span class="btn-label">
+                                                                <label class="mr-2 switch product-switch">
+                                                                    <input id="{{l.id}}" type="checkbox" checked="" onchange="blockunblocklesson(this.id)">
+                                                                    <span class="slider round product-slide"></span>
+                                                                </label>
+                                                            </span>
+                                                            <label id="{{l.id}}" for="">Block</label>
+                                                        {% endif %}
+                                                    </button>    
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'base/footer.html' %}
+    {% include 'base/footer-link.html' %}
+    
+    <div id="deleteUser" tabindex="-1" role="dialog" class="modal fade">
+     <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="text-center">
+              <h4>Are you sure you want to Delete this Lesson category?</h4>
+              <div class="m-t-lg">
+                <button id="lessiondeleteconfirm" class="btn btn-red" data-dismiss="modal" type="button" data-toggle="modal" lessionid="" onclick="deleteConfirm()">Continue</button>
+                <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <!-- Modal -->
+<div class="modal fade" id="exampleModalLong">
+    <div class="modal-dialog modal-sm" data-dismiss="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+            <div class="successful-icon text-center">
+            <i class="fa fa-check-square-o" aria-hidden="true" style="font-size: 22px;color: #17b517;"></i>
+            </div>
+                <h4 class="text-center">Delete Successfully</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal END-->
+<script>
+    function deletelesson(clicked_id){
+        document.getElementById('lessiondeleteconfirm').setAttribute('lessionid',clicked_id);
+    }
+    function deleteConfirm(){
+        var pk = document.getElementById('lessiondeleteconfirm').getAttribute('lessionid');
+        $.ajax({
+
+            type:"POST",
+            url: "/lessons/deletelc/"+pk,
+            headers: { "X-CSRFToken":getCookie("csrftoken") },
+
+            success: function( data ){
+                swal("", "Deleted Successfully", "success").then(function(){
+                    location.reload();
+                });
+                    // alert(data.message)
+                    // window.location.reload();
+            },
+
+            statusCode: {
+                404: function(response) {
+                    console.log('ajax.statusCode: 404');
+                    alert('404')
+                },
+                500: function(response) {
+                    alert('500')
+                },
+                400: function(response) {
+                    alert('400')
+                },
+            }
+        })
+    }
+    function blockunblocklesson(clicked_id){
+        $.ajax({
+            type:"POST",
+            url: "/lessons/blockunblocklc/"+clicked_id,
+            headers: {"X-CSRFToken":getCookie("csrftoken")},
+            success: function(data){
+                tags = document.getElementsByTagName("label")
+                for(var i=0;i<tags.length;i++){
+                    if(tags[i].id==clicked_id){
+                        if(tags[i].innerHTML==="Block"){
+                            tags[i].innerHTML="Unblock"
+                        }
+                        else{
+                            tags[i].innerHTML="Block"
+                        }
+                    }
+                }
+                swal("","Updated Successfully","success").then(function(){
+                    
+                });
+            },
+            statusCode: {
+                404: function(response) {
+                    console.log('ajax.statusCode: 404');
+                    alert('404')
+                },
+                500: function(response) {
+                    alert('500')
+                },
+                400: function(response) {
+                    alert('400')
+                },
+            }
+        })
+    };
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+</script>
+<script>        
+    function showImportSubmit() {
+        document.getElementById("importSubmit").style.display = "inline-block";    
+    }
+</script>
+
+    
