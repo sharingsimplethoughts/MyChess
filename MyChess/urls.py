@@ -50,6 +50,6 @@ urlpatterns = [
     path('admin_panel/payment/',include('_admin_panel.apayment.urls',namespace='ap_payment')),
     path('admin_panel/puzzles/',include('_admin_panel.apuzzles.urls',namespace='ap_puzzles')),
 ]
-urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
+# urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
 if settings.DEBUG:
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
