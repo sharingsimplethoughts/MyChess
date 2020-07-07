@@ -79,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'silk.middleware.SilkyMiddleware',
+    'MyChess.middleware.MyMiddleWare',
 ]
 
 ROOT_URLCONF = 'MyChess.urls'
@@ -186,6 +187,17 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 
+LOGIN_URL = '/admin_panel/login'
+LOGIN_REDIRECT_URL = '/admin_panel/home'
+
+LOGIN_EXEMPT_URLS = (
+    'admin_panel/logout',
+    # r'^admin_panel/register/$',
+    r'^admin_panel/password_reset/$',
+    r'^admin_panel/password_reset/done/$',
+    r'^admin_panel/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    r'^admin_panel/reset/done/$',
+)
 
 
 LOGGING = {
